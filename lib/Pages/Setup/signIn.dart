@@ -17,7 +17,7 @@ class _LoginPageState extends State<LoginPage> {
 	
 	@override
 	Widget build(BuildContext context) {
-		return loading ? Loading("Loading...") : Scaffold(
+		return loading ? Loading(message: 'Loading...') : Scaffold(
 				appBar: AppBar(
 					elevation: 0,
 					backgroundColor: Color.fromARGB(255, 0, 40, 0),

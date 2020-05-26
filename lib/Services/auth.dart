@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:smart_baby_monitoring_device/Models/user.dart';
+import 'package:smart_baby_monitoring_device/Services/database.dart';
 
 class AuthService {
 	final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -50,6 +51,10 @@ class AuthService {
 		try {
 			AuthResult result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
 			FirebaseUser user = result.user;
+			
+			// create a new user data for this user
+			await DatabaseService(uid: user.uid).createUserData(email, false, 0);
+			
 			return _userFromFirebaseUser(user);
 		}
 		catch (e) {

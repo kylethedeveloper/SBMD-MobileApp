@@ -3,11 +3,14 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class Loading extends StatelessWidget {
 	
-	String message;
+	final String message;
+	Loading({this.message});
 	
+	/* This is not a proper usage
 	Loading(String message) {
 		this.message = message;
 	}
+	*/
 	
 	@override
 	Widget build(BuildContext context) {
@@ -25,7 +28,7 @@ class Loading extends StatelessWidget {
 							),
 							Padding(
 								padding: const EdgeInsets.all(8.0),
-								child: SpinKitPumpingHeart(
+								child: SpinKitFadingCircle(
 									color: Colors.red,
 									size: 90.0,
 								),

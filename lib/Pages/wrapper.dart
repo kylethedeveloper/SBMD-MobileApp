@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:smart_baby_monitoring_device/Pages/Home/home.dart';
+import 'package:smart_baby_monitoring_device/Pages/Home/homePage.dart';
 import 'package:smart_baby_monitoring_device/Pages/Setup/welcome.dart';
 import 'package:smart_baby_monitoring_device/Models/user.dart';
 

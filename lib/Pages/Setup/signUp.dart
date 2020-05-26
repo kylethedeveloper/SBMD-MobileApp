@@ -16,7 +16,7 @@ class _SignUpPageState extends State<SignUpPage> {
 	
 	@override
 	Widget build(BuildContext context) {
-		return loading ? Loading("Registering...") : Scaffold(
+		return loading ? Loading(message: 'Registering...') : Scaffold(
 				appBar: AppBar(
 					backgroundColor: Color.fromARGB(255, 0, 40, 0),
 					title: Text("Sign Up Page"),
