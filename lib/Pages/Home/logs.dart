@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:smart_baby_monitoring_device/Services/auth.dart';
+import 'package:provider/provider.dart';
+import 'package:smart_baby_monitoring_device/Models/logsData.dart';
+import 'package:smart_baby_monitoring_device/Models/user.dart';
+import 'package:smart_baby_monitoring_device/Services/database.dart';
 
+import 'logsList.dart';
+
+// TODO: change log interval
 
 class Logs extends StatefulWidget {
 	@override
@@ -8,27 +14,12 @@ class Logs extends StatefulWidget {
 }
 
 class _LogsState extends State<Logs> {
-	final AuthService _auth = AuthService();
-	
 	@override
 	Widget build(BuildContext context) {
-		return Container(
-			child: Column(
-					mainAxisAlignment: MainAxisAlignment.center,
-					crossAxisAlignment: CrossAxisAlignment.center,
-					children: <Widget>[
-						Padding(
-							padding: const EdgeInsets.all(8.0),
-							child: Text.rich(
-									TextSpan(
-											text: "LOGS PAGE: ",
-											style: TextStyle(fontSize: 24),
-											children: <TextSpan>[
-												TextSpan(text: "INSERT")
-											]
-									)),
-						),
-					]),
+		final user = Provider.of<User>(context); // accessing the user ID from the provider
+		return StreamProvider<List<LogsData>>.value(
+			value: DatabaseService(uid: user.uid).logsData,
+			child: LogsList(),
 		);
 	}
 }

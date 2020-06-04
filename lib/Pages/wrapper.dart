@@ -4,6 +4,8 @@ import 'package:smart_baby_monitoring_device/Pages/Home/homePage.dart';
 import 'package:smart_baby_monitoring_device/Pages/Setup/welcome.dart';
 import 'package:smart_baby_monitoring_device/Models/user.dart';
 
+//TODO: Initial home page route bug - add loading screen
+
 class Wrapper extends StatelessWidget {
 	@override
 	Widget build(BuildContext context) {

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
 import 'package:smart_baby_monitoring_device/Pages/Home/home.dart';
 import 'package:smart_baby_monitoring_device/Pages/Home/alerts.dart';
 import 'package:smart_baby_monitoring_device/Pages/Home/settings.dart';
@@ -31,9 +30,9 @@ class _HomePageState extends State<HomePage> {
 	@override
 	Widget build(BuildContext context) {
 		return Scaffold(
-			//resizeToAvoidBottomInset: true,
+			//resizeToAvoidBottomInset: false,
 			appBar: AppBar(
-				backgroundColor: Color.fromARGB(255, 0, 40, 0),
+				backgroundColor: Colors.mySpecialGreen,
 				title: (() {
 					if(_selectedIndex == 1) { return Text("Alerts"); }
 					else if(_selectedIndex == 2) { return Text("Logs"); }
@@ -48,7 +47,7 @@ class _HomePageState extends State<HomePage> {
 						},
 						textColor: Colors.white,
 						icon: Icon(Icons.block),
-						label: Text("Sign Out"),
+						label: Text("Logout"),
 					)
 				],
 			),
@@ -57,7 +56,7 @@ class _HomePageState extends State<HomePage> {
 			),
 			bottomNavigationBar: Theme(
 				data: Theme.of(context).copyWith(
-						canvasColor: Color.fromARGB(255, 0, 40, 0)
+						canvasColor: Colors.mySpecialGreen
 				),
 			  child: BottomNavigationBar(
 			  	items: const <BottomNavigationBarItem>[

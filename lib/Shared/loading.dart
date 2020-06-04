@@ -37,7 +37,7 @@ class Loading extends StatelessWidget {
 								padding: const EdgeInsets.all(8.0),
 								child: Text(
 									message,
-									style: TextStyle(color: Color.fromARGB(255, 0, 40, 0), fontSize: 24, decoration: TextDecoration.none, fontWeight: FontWeight.bold),
+									style: TextStyle(color: Colors.mySpecialGreen, fontSize: 24, decoration: TextDecoration.none, fontWeight: FontWeight.bold),
 									textAlign: TextAlign.center,
 								),
 							),

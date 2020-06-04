@@ -12,7 +12,7 @@ class _WelcomePageState extends State<WelcomePage> {
 	Widget build(BuildContext context) {
 		return Scaffold(
 			appBar: AppBar(
-				backgroundColor: Color.fromARGB(255, 0, 40, 0),
+				backgroundColor: Colors.mySpecialGreen,
 				title: Text("Welcome!"),
 				centerTitle: true,
 			),
