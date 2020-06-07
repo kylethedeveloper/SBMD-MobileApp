@@ -53,7 +53,7 @@ class AuthService {
 			FirebaseUser user = result.user;
 			
 			// create a new user data for this user
-			await DatabaseService(uid: user.uid).createUserData(email, false, 0, DateTime(1990), false, -99, -99, -99, -99);
+			await DatabaseService(uid: user.uid).createUserData(email, false, 0, DateTime(1990), false, -99, -99, -99, -99, false);
 			
 			return _userFromFirebaseUser(user);
 		}

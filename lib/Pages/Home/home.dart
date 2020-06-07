@@ -4,6 +4,8 @@ import 'package:smart_baby_monitoring_device/Models/user.dart';
 import 'package:smart_baby_monitoring_device/Models/userData.dart';
 import 'package:smart_baby_monitoring_device/Services/database.dart';
 
+import 'SidePages/liveStream.dart';
+
 
 class Home extends StatefulWidget {
 	@override
@@ -12,7 +14,6 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
 	
-	//TODO: Connection status boolean error
 	//TODO: music active color disappears after changing page
 	//TODO: not responsive
 	//TODO: if device status false, show something else
@@ -52,6 +53,7 @@ class _HomeState extends State<Home> {
 											else {
 												DatabaseService(uid: user.uid).changeMonitoring(false);
 												DatabaseService(uid: user.uid).changeMusic(0);
+												DatabaseService(uid: user.uid).changeLiveStream(false);
 												return false;
 											}
 											/*print(_newDate);
@@ -98,7 +100,14 @@ class _HomeState extends State<Home> {
 																ButtonTheme(
 																	minWidth: 100,
 																	child: RaisedButton(
-																		onPressed: checkConnection() ? () {} : null,
+																		onPressed: checkConnection() ? () async {
+																			await DatabaseService(uid: user.uid).changeLiveStream(true);
+																			Navigator.push(
+																					context,
+																					MaterialPageRoute(
+																							builder: (context) => LiveStream(uid: user.uid), fullscreenDialog: true));
+																		}
+																				: null,
 																		child: Text('Watch', style: TextStyle(fontSize: 18, color: Colors.white)),
 																		color: Colors.mySpecialGreen,
 																		padding: const EdgeInsets.all(8.0),
@@ -238,7 +247,7 @@ class _HomeState extends State<Home> {
 																), // music 3
 															],
 														),
-													), // music cards // TODO: if not connected disabled
+													), // music cards
 													Center(
 														child: RaisedButton.icon(
 															
@@ -255,7 +264,7 @@ class _HomeState extends State<Home> {
 															shape: RoundedRectangleBorder(
 																	borderRadius: BorderRadius.circular(16.0)),
 														),
-													) // stop music button // TODO: if not connected disabled
+													) // stop music button
 												],
 											
 											),

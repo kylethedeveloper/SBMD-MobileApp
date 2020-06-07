@@ -4,9 +4,10 @@ import 'package:provider/provider.dart';
 import 'package:smart_baby_monitoring_device/Models/alertLimitsData.dart';
 import 'package:smart_baby_monitoring_device/Models/alertsData.dart';
 import 'package:smart_baby_monitoring_device/Models/user.dart';
+import 'package:smart_baby_monitoring_device/Pages/Home/SidePages/forbiddenZone.dart';
 import 'package:smart_baby_monitoring_device/Services/database.dart';
 
-import 'alertsList.dart';
+import 'SidePages/alertsList.dart';
 
 // TODO: create another dart file that checks the values and returns AlertLimitsData class to this page !!!
 // TODO: TextInput Label = value, (if = -99 , empty)
@@ -272,7 +273,10 @@ class _AlertsState extends State<Alerts> {
 																		height: 30,
 																		minWidth: 70,
 																		child: RaisedButton(
-																			onPressed: () {},
+																			onPressed: () async {
+																				// TODO: retrieve a snapshot from camera
+																				Navigator.push(context, MaterialPageRoute(builder: (context) => ForbiddenZone()));
+																			},
 																			child: Text('Set', style: TextStyle(fontSize: 16, color: Colors.white)),
 																			color: Colors.red[700],
 																			padding: const EdgeInsets.all(8.0),

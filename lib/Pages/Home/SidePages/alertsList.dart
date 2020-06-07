@@ -39,6 +39,7 @@ class _AlertsListState extends State<AlertsList> {
 								}
 								else {
 									return ListView.builder(
+										//primary: true,
 										shrinkWrap: true,
 										padding: EdgeInsets.only(top: 8, bottom: 4),
 										itemCount: alerts.length,

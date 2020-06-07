@@ -14,7 +14,7 @@ class DatabaseService {
 	final CollectionReference usersCollection = Firestore.instance.collection('users');
 	
 	Future createUserData(String email, bool setup, int music, DateTime connection, bool monitoringMode,
-			int tempBelow, int tempAbove, int humidBelow, int humidAbove) async {
+			int tempBelow, int tempAbove, int humidBelow, int humidAbove, bool liveStream) async {
 		return await usersCollection.document(uid).setData({
 			'mail': email,
 			'setup': setup,
@@ -24,7 +24,8 @@ class DatabaseService {
 			'tempBelow': tempBelow,
 			'tempAbove': tempAbove,
 			'humidBelow': humidBelow,
-			'humidAbove': humidAbove
+			'humidAbove': humidAbove,
+			'liveStream' : liveStream
 		});
 	}
 	
@@ -53,6 +54,13 @@ class DatabaseService {
 	Future changeMonitoring(bool monitoring) async {
 		return await usersCollection.document(uid).setData({
 			'monitoringMode': monitoring,
+		}, merge: true);
+	}
+	
+	// function to change live stream
+	Future changeLiveStream(bool live) async {
+		return await usersCollection.document(uid).setData({
+			'liveStream' : live,
 		}, merge: true);
 	}
 	
@@ -125,7 +133,8 @@ class DatabaseService {
 				monitoringMode: snapshot.data['monitoringMode'] ?? false,
 				connection: snapshot.data['connection'],
 				setup: snapshot.data['setup'] ?? false,
-				music: snapshot.data['music'] ?? 0
+				music: snapshot.data['music'] ?? 0,
+				liveStream: snapshot.data['liveStream'] ?? false,
 		);
 	}
 	

@@ -4,7 +4,7 @@ import 'package:smart_baby_monitoring_device/Models/logsData.dart';
 import 'package:smart_baby_monitoring_device/Models/user.dart';
 import 'package:smart_baby_monitoring_device/Services/database.dart';
 
-import 'logsList.dart';
+import 'SidePages/logsList.dart';
 
 // TODO: change log interval
 
