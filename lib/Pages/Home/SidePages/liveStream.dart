@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mjpeg/flutter_mjpeg.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:smart_baby_monitoring_device/Services/database.dart';
+//import 'package:flutter_hooks/flutter_hooks.dart';
 
 class LiveStream extends StatefulWidget {
 	
@@ -22,6 +22,7 @@ class _LiveStreamState extends State<LiveStream> {
 	//Future<void> _initializeVideoPlayer;
 	
 	final String _url = "STREAM_URL";
+	// HIDE: the link
 	
 	@override
 	Widget build(BuildContext context) {
@@ -90,7 +91,7 @@ class _LiveStreamState extends State<LiveStream> {
 		);
 	}
 	
-	Future<void> _back() async {
+	Future<bool> _back() async {
 		await DatabaseService(uid: uid).changeLiveStream(false);
 		Navigator.pop(context);
 	}

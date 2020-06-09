@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -6,12 +7,10 @@ import 'package:smart_baby_monitoring_device/Models/alertsData.dart';
 import 'package:smart_baby_monitoring_device/Models/user.dart';
 import 'package:smart_baby_monitoring_device/Pages/Home/SidePages/forbiddenZone.dart';
 import 'package:smart_baby_monitoring_device/Services/database.dart';
-
+import 'package:smart_baby_monitoring_device/Shared/loading.dart';
 import 'SidePages/alertsList.dart';
 
 // TODO: create another dart file that checks the values and returns AlertLimitsData class to this page !!!
-// TODO: TextInput Label = value, (if = -99 , empty)
-// TODO: Switch is enabled if value != -99
 
 class Alerts extends StatefulWidget {
 	@override
@@ -19,21 +18,31 @@ class Alerts extends StatefulWidget {
 }
 
 class _AlertsState extends State<Alerts> {
+	
+	bool loading = false;
+	
 	@override
 	Widget build(BuildContext context) {
 		final user = Provider.of<User>(context); // accessing the user ID from the provider
+		final List noForbiddenZone = [0,0,0,0];
 		bool valueCheck(int val) {
 			if (val != -99)
 				return true;
 			else
 				return false;
-		}
+		} // check if temp or humid alert is set
+		bool isForbiddenZoneSet(List fZ) {
+			if(!listEquals(noForbiddenZone, fZ))
+				return true;
+			else
+				return false;
+		} // check if forbidden zone is set
 		
-		return Container(
+		return loading ? Loading(message: 'Retrieving the live view...',) : Container(
 				margin: EdgeInsets.fromLTRB(16, 8, 16, 8),
 				child: StreamBuilder<AlertLimitsData>(
 						stream: DatabaseService(uid: user.uid).alertsLimitsData,
-						builder: (context, snapshot) {
+						builder: (con, snapshot) {
 							if (!snapshot.hasError) {
 								AlertLimitsData a = snapshot.data; // get the data from snapshot
 								switch (snapshot.connectionState) {
@@ -274,8 +283,11 @@ class _AlertsState extends State<Alerts> {
 																		minWidth: 70,
 																		child: RaisedButton(
 																			onPressed: () async {
-																				// TODO: retrieve a snapshot from camera
-																				Navigator.push(context, MaterialPageRoute(builder: (context) => ForbiddenZone()));
+																				await DatabaseService(uid: user.uid).changeLiveStream(true);
+																				setState(() => loading = true);
+																				await Future.delayed(const Duration(milliseconds: 2500));
+																				setState(() => loading = false);
+																				Navigator.push(context, MaterialPageRoute(builder: (context) => ForbiddenZone(uid: user.uid,)));
 																			},
 																			child: Text('Set', style: TextStyle(fontSize: 16, color: Colors.white)),
 																			color: Colors.red[700],
@@ -283,8 +295,16 @@ class _AlertsState extends State<Alerts> {
 																			shape: RoundedRectangleBorder(
 																					borderRadius: BorderRadius.circular(15.0)),
 																		),
-																	), // input field
-																	Switch(value: false, onChanged: null,),
+																	), // set button
+																	Switch.adaptive(
+																		activeColor: Colors.mySpecialGreen,
+																		value: isForbiddenZoneSet(a.forbiddenZone),
+																		onChanged: (val) async {
+																			if (isForbiddenZoneSet(a.forbiddenZone)) {
+																				await DatabaseService(uid: user.uid).setForbiddenZone([0,0,0,0]);
+																			}
+																		},
+																	),
 																],
 															),
 														), // set forbidden zone

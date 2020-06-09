@@ -3,6 +3,9 @@ import 'package:provider/provider.dart';
 import 'package:smart_baby_monitoring_device/Models/user.dart';
 import 'package:smart_baby_monitoring_device/Services/database.dart';
 
+// TODO: Change Password
+// TODO: Delete Account
+
 class Settings extends StatefulWidget {
 	@override
 	_SettingsState createState() => _SettingsState();

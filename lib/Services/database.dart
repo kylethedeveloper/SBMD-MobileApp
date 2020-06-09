@@ -14,7 +14,7 @@ class DatabaseService {
 	final CollectionReference usersCollection = Firestore.instance.collection('users');
 	
 	Future createUserData(String email, bool setup, int music, DateTime connection, bool monitoringMode,
-			int tempBelow, int tempAbove, int humidBelow, int humidAbove, bool liveStream) async {
+			int tempBelow, int tempAbove, int humidBelow, int humidAbove, bool liveStream, List forbiddenZone) async {
 		return await usersCollection.document(uid).setData({
 			'mail': email,
 			'setup': setup,
@@ -25,9 +25,12 @@ class DatabaseService {
 			'tempAbove': tempAbove,
 			'humidBelow': humidBelow,
 			'humidAbove': humidAbove,
-			'liveStream' : liveStream
+			'liveStream' : liveStream,
+			'forbiddenZone' : forbiddenZone
 		});
 	}
+	
+	// SETTERS ----------------------
 	
 	// function to change email
 	Future changeEmail(String email) async {
@@ -110,6 +113,15 @@ class DatabaseService {
 		}, merge: true);
 	}
 	
+	// function to set forbiddenZone
+	Future setForbiddenZone(List forbiddenZone) async {
+		return await usersCollection.document(uid).setData({
+			'forbiddenZone' : forbiddenZone,
+		}, merge: true);
+	}
+	
+	// GETTERS ----------------------
+	
 	// alert limits data from snapshot
 	AlertLimitsData _alertLimitsFromSnapshot(DocumentSnapshot snapshot) {
 		return AlertLimitsData(
@@ -117,6 +129,7 @@ class DatabaseService {
 				tempAbove: snapshot.data['tempAbove'],
 				humidBelow: snapshot.data['humidBelow'],
 				humidAbove: snapshot.data['humidAbove'],
+				forbiddenZone: snapshot.data['forbiddenZone'],
 		);
 	}
 	

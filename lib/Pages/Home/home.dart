@@ -14,9 +14,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
 	
-	//TODO: music active color disappears after changing page
 	//TODO: not responsive
-	//TODO: if device status false, show something else
 	
 	@override
 	Widget build(BuildContext context) {

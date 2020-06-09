@@ -7,7 +7,8 @@ class AlertLimitsData {
 	final int tempAbove;
 	final int humidBelow;
 	final int humidAbove;
+	final List forbiddenZone;
 	
-	AlertLimitsData({ this.tempBelow, this.tempAbove, this.humidBelow, this.humidAbove });
+	AlertLimitsData({ this.tempBelow, this.tempAbove, this.humidBelow, this.humidAbove, this.forbiddenZone });
 	
 }
