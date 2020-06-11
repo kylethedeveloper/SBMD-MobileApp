@@ -17,10 +17,14 @@ class _ForbiddenZoneState extends State<ForbiddenZone> {
 	_ForbiddenZoneState({this.uid});
 	
 	final String _img = "IMG_URL";
+	
 	// HIDE: the link
 	final String _img2 = "https://images.pexels.com/photos/53621/calculator-calculation-insurance-finance-53621.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940";
+	String _img3;
 	
 	List fin;
+	
+	bool demo = false;
 	
 	Future<bool> _back() async {
 		await DatabaseService(uid: uid).changeLiveStream(false);
@@ -31,94 +35,122 @@ class _ForbiddenZoneState extends State<ForbiddenZone> {
 	Widget build(BuildContext context) {
 		return WillPopScope(
 			onWillPop: _back,
-		  child: Scaffold(
-		  		appBar: AppBar(
-		  			backgroundColor: Colors.mySpecialGreen,
-		  			title: Text("Set the forbidden zone"),
-		  			centerTitle: true,
-		  			leading: IconButton(
-		  				icon: Icon(Icons.arrow_back),
-		  				onPressed: _back,
-		  			),
-		  		),
-		  		body: Center(
-		  			child: Column(
-		  				mainAxisAlignment: MainAxisAlignment.center,
-		  				crossAxisAlignment: CrossAxisAlignment.center,
-		  				children: <Widget>[
-		  					Padding(
-		  						padding: const EdgeInsets.only(bottom: 24),
-		  						child: Text(
-		  							"You can move & resize the rectangle freely.\n Then click the button to set the forbidden zone.",
-		  							style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.mySpecialGreen),
-		  							textAlign: TextAlign.center,
-		  						),
-		  					), // description
-		  					Container(
-		  						width: 405,
-		  						height: 305,
-		  						decoration: BoxDecoration(
-		  							border: Border.all(
-		  								color: Colors.black,
-		  								style: BorderStyle.solid,
-		  							),
-		  							borderRadius: BorderRadius.circular(2),
-		  						),
-		  						child: Stack(
-		  								children: <Widget>[
-		  									Center(
-		  									  child: Image(
-		  									  	// TODO: if not loaded
-		  									  	image: NetworkImageWithRetry(
-		  												  _img,
-		  										  ),
-		  									  	width: 400,
-		  									  	height: 300,
-		  									  	loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent loadingProgress) {
-		  									  		if (loadingProgress == null) return child;
-		  									  		return Container(
-		  									  				height: 250,
-		  									  				child: Row(
-		  									  					mainAxisAlignment: MainAxisAlignment.center,
-		  									  					children: <Widget>[
-		  									  						CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.mySpecialGreen),),
-		  									  					],
-		  									  				)
-		  									  		);
-		  									  	},
-		  									  ),
-		  									),
-		  									ResizableWidget(
-		  										finRectangle: (List fin) => setState(() {
-		  												this.fin = fin;  // retrieve this!
-		  											}),
-		  									)
-		  								]
-		  						),
-		  					), // image
-		  					ButtonTheme(
-		  						minWidth: 150,
-		  					  shape: RoundedRectangleBorder(
-		  							  borderRadius: BorderRadius.circular(14.0)
-		  					  ),
-		  					  child: RaisedButton.icon(
-		  					  		textColor: Colors.white,
-		  					  		icon: Icon(Icons.check_circle),
-		  					  		color: Colors.red[800],
-		  					  		label: Text("SET", style: TextStyle(fontSize: 20, color: Colors.white),),
-		  					  		onPressed: () async {
-		  					  			await DatabaseService(uid: uid).setForbiddenZone(fin);
-		  					  			await DatabaseService(uid: uid).changeLiveStream(false);
-		  					  			Navigator.pop(context);
-		  					  		},
-		  					  ),
-		  					), // set button
-		  				],
-		  			),
-		  		)
-		  ),
+			child: Scaffold(
+					appBar: AppBar(
+						backgroundColor: Colors.mySpecialGreen,
+						title: Text("Set the forbidden zone"),
+						centerTitle: true,
+						leading: IconButton(
+							icon: Icon(Icons.arrow_back),
+							onPressed: _back,
+						),
+					),
+					body: Center(
+						child: Column(
+							mainAxisAlignment: MainAxisAlignment.center,
+							crossAxisAlignment: CrossAxisAlignment.center,
+							children: <Widget>[
+								Padding(
+									padding: const EdgeInsets.only(bottom: 24),
+									child: Text(
+										"You can move & resize the rectangle freely.\n Then click the button to set the forbidden zone.",
+										style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.mySpecialGreen),
+										textAlign: TextAlign.center,
+									),
+								), // description
+								Container(
+									width: 405,
+									height: 305,
+									decoration: BoxDecoration(
+										border: Border.all(
+											color: Colors.black,
+											style: BorderStyle.solid,
+										),
+										borderRadius: BorderRadius.circular(2),
+									),
+									child: Stack(
+											children: <Widget>[
+												Center(
+													child: Image(
+														// TODO: if not loaded
+														image: demo
+																? AssetImage(
+															"lib/Assets/baby-forbiddenzone.png"
+														)
+																: NetworkImageWithRetry(
+															_img,
+														),
+														width: 400,
+														height: 300,
+														loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent loadingProgress) {
+															if (loadingProgress == null) return child;
+															return Container(
+																	height: 250,
+																	child: Row(
+																		mainAxisAlignment: MainAxisAlignment.center,
+																		children: <Widget>[
+																			CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.mySpecialGreen),),
+																		],
+																	)
+															);
+														},
+													),
+												),
+												ResizableWidget(
+													finRectangle: (List fin) =>
+															setState(() {
+																this.fin = fin; // retrieve this!
+															}),
+												)
+											]
+									),
+								), // image
+								ButtonTheme(
+									minWidth: 150,
+									shape: RoundedRectangleBorder(
+											borderRadius: BorderRadius.circular(14.0)
+									),
+									child: RaisedButton.icon(
+										textColor: Colors.white,
+										icon: Icon(Icons.check_circle),
+										color: Colors.red[800],
+										label: Text("SET", style: TextStyle(fontSize: 20, color: Colors.white),),
+										onPressed: () async {
+											await DatabaseService(uid: uid).setForbiddenZone(fin);
+											await DatabaseService(uid: uid).changeLiveStream(false);
+											Navigator.pop(context);
+										},
+									),
+								), // set button
+								Row(
+									mainAxisAlignment: MainAxisAlignment.center,
+									crossAxisAlignment: CrossAxisAlignment.center,
+									children: <Widget>[
+										Text(
+											"Demo Mode ",
+											style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+										),
+										Switch.adaptive(
+												activeColor: Colors.mySpecialGreen,
+												value: demo,
+												onChanged: (val) {
+													setState(() {
+														demo = val;
+													});
+												}
+										),
+									],
+								) // demo switch
+							],
+						),
+					)
+			),
 		);
 	}
+}
+
+Widget myImage() {
+
 }
 
 class ResizableWidget extends StatefulWidget {
@@ -126,6 +158,7 @@ class ResizableWidget extends StatefulWidget {
 	
 	final Function(List) finRectangle;
 	final Widget child;
+	
 	@override
 	_ResizableWidgetState createState() => _ResizableWidgetState();
 }
@@ -137,10 +170,10 @@ class _ResizableWidgetState extends State<ResizableWidget> {
 	double height = 150;
 	double width = 150;
 	
-	double left = 125;  // x1
-	double top = 75;    // y1
-	int right = 275;    // x2
-	int bottom = 225;   // y2
+	double left = 125; // x1
+	double top = 75; // y1
+	int right = 275; // x2
+	int bottom = 225; // y2
 	
 	void onDrag(double dx, double dy) {
 		var newHeight = height + dy;
@@ -171,7 +204,7 @@ class _ResizableWidgetState extends State<ResizableWidget> {
 		int y1 = t.round();
 		int x2 = r;
 		int y2 = b;
-		List fin = [x1,y1,x2,y2];
+		List fin = [x1, y1, x2, y2];
 		return fin;
 	}
 	
@@ -185,7 +218,7 @@ class _ResizableWidgetState extends State<ResizableWidget> {
 					child: Container(
 						height: height,
 						width: width,
-						color: Colors.red[800].withOpacity(0.4) ,
+						color: Colors.red[800].withOpacity(0.4),
 						child: widget.child,
 					),
 				),
@@ -345,8 +378,8 @@ class _ResizableWidgetState extends State<ResizableWidget> {
 								top = checkHorizontalSideLimit(top + dy, bottom) ? (top + dy) : top;
 								left = checkVerticalSideLimit(left + dx, right) ? (left + dx) : left;
 							});
-							bottom = (top + height).round();  // y2
-							right = (left + width).round();   // x2
+							bottom = (top + height).round(); // y2
+							right = (left + width).round(); // x2
 							widget.finRectangle(returnThis(left, top, right, bottom)); // return the list
 						},
 						handlerWidget: HandlerWidget.VERTICAL,
@@ -399,8 +432,8 @@ class _ManipulatingBallState extends State<ManipulatingBall> {
 				decoration: BoxDecoration(
 					color: Colors.white70.withOpacity(0.5),
 					shape: this.widget.handlerWidget == HandlerWidget.VERTICAL
-					? BoxShape.circle
-					: BoxShape.rectangle,
+							? BoxShape.circle
+							: BoxShape.rectangle,
 				),
 			),
 		);

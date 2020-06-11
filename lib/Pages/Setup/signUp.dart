@@ -159,6 +159,8 @@ void _showWrongCred(BuildContext context) {
 	final wrongCred = new SnackBar(
 		backgroundColor: Colors.red[900],
 		duration: Duration(seconds: 3),
+		shape: RoundedRectangleBorder(
+				borderRadius: BorderRadius.circular(10.0)),
 		content:
 		Text(
 			"Couldn't sign up. Try again later.",

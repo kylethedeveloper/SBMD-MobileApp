@@ -7,7 +7,7 @@
          FlutterApplication and put your custom class here. -->
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="smart_baby_monitoring_device"
+        android:label="Smart Baby Monitoring"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

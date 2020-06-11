@@ -130,6 +130,7 @@ class DatabaseService {
 				humidBelow: snapshot.data['humidBelow'],
 				humidAbove: snapshot.data['humidAbove'],
 				forbiddenZone: snapshot.data['forbiddenZone'],
+				connection: snapshot.data['connection'],
 		);
 	}
 	

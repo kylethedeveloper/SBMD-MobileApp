@@ -21,10 +21,22 @@ class _AlertsState extends State<Alerts> {
 	
 	bool loading = false;
 	
+	final connectionSnack = new SnackBar(
+		backgroundColor: Colors.red[700],
+		duration: Duration(seconds: 3),
+		shape: RoundedRectangleBorder(
+				borderRadius: BorderRadius.circular(10.0)),
+		content:
+		Text(
+			"Device Status: Disconnected!",
+			style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+		),
+	);
+	
 	@override
 	Widget build(BuildContext context) {
 		final user = Provider.of<User>(context); // accessing the user ID from the provider
-		final List noForbiddenZone = [0,0,0,0];
+		final List noForbiddenZone = [0, 0, 0, 0];
 		bool valueCheck(int val) {
 			if (val != -99)
 				return true;
@@ -32,7 +44,7 @@ class _AlertsState extends State<Alerts> {
 				return false;
 		} // check if temp or humid alert is set
 		bool isForbiddenZoneSet(List fZ) {
-			if(!listEquals(noForbiddenZone, fZ))
+			if (!listEquals(noForbiddenZone, fZ))
 				return true;
 			else
 				return false;
@@ -57,7 +69,7 @@ class _AlertsState extends State<Alerts> {
 									// while waiting to retrieve data
 										return Center(child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.mySpecialGreen)));
 									default:
-									/*bool checkConnection() {
+										bool checkConnection() {
 											var _connectionDate = a.connection;
 											var _newDate = _connectionDate.toDate().toUtc();
 											if (_newDate
@@ -69,9 +81,10 @@ class _AlertsState extends State<Alerts> {
 											else {
 												DatabaseService(uid: user.uid).changeMonitoring(false);
 												DatabaseService(uid: user.uid).changeMusic(0);
+												DatabaseService(uid: user.uid).changeLiveStream(false);
 												return false;
 											}
-										} // checking the connection*/
+										} // checking the connection
 										final tempBelow = TextEditingController(text: valueCheck(a.tempBelow) ? a.tempBelow.toString() : '');
 										final tempAbove = TextEditingController(text: valueCheck(a.tempAbove) ? a.tempAbove.toString() : '');
 										final humidBelow = TextEditingController(text: valueCheck(a.humidBelow) ? a.humidBelow.toString() : '');
@@ -283,11 +296,16 @@ class _AlertsState extends State<Alerts> {
 																		minWidth: 70,
 																		child: RaisedButton(
 																			onPressed: () async {
-																				await DatabaseService(uid: user.uid).changeLiveStream(true);
-																				setState(() => loading = true);
-																				await Future.delayed(const Duration(milliseconds: 2500));
-																				setState(() => loading = false);
-																				Navigator.push(context, MaterialPageRoute(builder: (context) => ForbiddenZone(uid: user.uid,)));
+																				if (checkConnection()) {
+																					await DatabaseService(uid: user.uid).changeLiveStream(true);
+																					setState(() => loading = true);
+																					await Future.delayed(const Duration(milliseconds: 4000));
+																					setState(() => loading = false);
+																					Navigator.push(context, MaterialPageRoute(builder: (context) => ForbiddenZone(uid: user.uid,)));
+																				}
+																				else {
+																					Future.delayed(Duration(milliseconds: 200), () {Scaffold.of(context).showSnackBar(connectionSnack);});  // without delay, doesn't work
+																				}
 																			},
 																			child: Text('Set', style: TextStyle(fontSize: 16, color: Colors.white)),
 																			color: Colors.red[700],
@@ -301,7 +319,7 @@ class _AlertsState extends State<Alerts> {
 																		value: isForbiddenZoneSet(a.forbiddenZone),
 																		onChanged: (val) async {
 																			if (isForbiddenZoneSet(a.forbiddenZone)) {
-																				await DatabaseService(uid: user.uid).setForbiddenZone([0,0,0,0]);
+																				await DatabaseService(uid: user.uid).setForbiddenZone([0, 0, 0, 0]);
 																			}
 																		},
 																	),

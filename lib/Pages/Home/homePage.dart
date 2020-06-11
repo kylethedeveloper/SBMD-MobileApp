@@ -28,7 +28,7 @@ class _HomePageState extends State<HomePage> {
 	];
 	
 	@override
-	Widget build(BuildContext context) {
+	Widget build(BuildContext homeContext) {
 		return Scaffold(
 			//resizeToAvoidBottomInset: false,
 			appBar: AppBar(
@@ -55,7 +55,7 @@ class _HomePageState extends State<HomePage> {
 				child: _widgetOptions.elementAt(_selectedIndex),
 			),
 			bottomNavigationBar: Theme(
-				data: Theme.of(context).copyWith(
+				data: Theme.of(homeContext).copyWith(
 						canvasColor: Colors.mySpecialGreen
 				),
 			  child: BottomNavigationBar(

@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:smart_baby_monitoring_device/Models/user.dart';
 import 'package:smart_baby_monitoring_device/Models/userData.dart';
 import 'package:smart_baby_monitoring_device/Services/database.dart';
+import 'package:smart_baby_monitoring_device/Shared/loading.dart';
 
 import 'SidePages/liveStream.dart';
 
@@ -14,17 +15,19 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
 	
+	bool loading = false;
+	
 	//TODO: not responsive
 	
 	@override
 	Widget build(BuildContext context) {
 		final user = Provider.of<User>(context); // accessing the user ID from the provider
-		return Container(
+		return loading ? Loading(message: 'Retrieving the live view...',) : Container(
 			child: Padding(
 				padding: const EdgeInsets.fromLTRB(14, 12, 14, 12),
 				child: StreamBuilder<UserData>(
 						stream: DatabaseService(uid: user.uid).userData,
-						builder: (context, snapshot) {
+						builder: (con, snapshot) {
 							if (!snapshot.hasError) {
 								UserData userData = snapshot.data; // get the data from snapshot
 								switch (snapshot.connectionState) {
@@ -100,10 +103,10 @@ class _HomeState extends State<Home> {
 																	child: RaisedButton(
 																		onPressed: checkConnection() ? () async {
 																			await DatabaseService(uid: user.uid).changeLiveStream(true);
-																			Navigator.push(
-																					context,
-																					MaterialPageRoute(
-																							builder: (context) => LiveStream(uid: user.uid), fullscreenDialog: true));
+																			setState(() => loading = true);
+																			await Future.delayed(const Duration(milliseconds: 3000));
+																			setState(() => loading = false);
+																			Navigator.push(context,	MaterialPageRoute(builder: (context) => LiveStream(uid: user.uid)));
 																		}
 																				: null,
 																		child: Text('Watch', style: TextStyle(fontSize: 18, color: Colors.white)),

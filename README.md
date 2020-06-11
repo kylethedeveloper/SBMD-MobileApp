@@ -13,6 +13,8 @@ Also, add the following line at the end of the **colors.dart** file by going to 
 
 For live streaming of the camera, [Dataplicity](https://dataplicity.com/) service is used to be able to watch the camera over the Internet. It is helpful to get rid of port forwarding shenanigans. [Here is the live streaming guide](https://docs.dataplicity.com/docs/stream-live-video-from-your-pi). Bear in mind that this project uses the [Free Subscription](https://www.dataplicity.com/subscriptions/plans/) among other subscription plans.
 
+You have to change `IMG_URL` and `STREAM_URL` in [forbiddenZone.dart](https://github.com/kylethedeveloper/SBMD-MobileApp/blob/9e6655f597fba2345d98b0113f7cbfcc6ae744a2/lib/Pages/Home/SidePages/forbiddenZone.dart#L19) and [liveStream.dart](https://github.com/kylethedeveloper/SBMD-MobileApp/blob/9e6655f597fba2345d98b0113f7cbfcc6ae744a2/lib/Pages/Home/SidePages/liveStream.dart#L24) files respectively.<br/> Dataplicity uses [Hawkeye](https://github.com/ipartola/hawkeye) as the streaming service so check that repository for detailed guidance about the links.
+
 ## :books: Resources :books:
 
 #### Flutter Related / UI Design
